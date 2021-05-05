@@ -141,6 +141,32 @@ module Bmc::Sdk
   end
 
   ##
+  # Reserve command will reserve a specific server.
+  #
+  # @see https://developers.phoenixnap.com/docs/bmc/1/routes/servers/%7Bserver_id%7D/actions/reserve/post
+
+  class Reserve
+    attr_accessor :serverID, :pricingModel
+
+    def initialize(client, serverID, pricingModel)
+      @client = client
+      @serverID = serverID
+      @pricingModel = pricingModel
+    end
+
+    def execute
+      requestBody = {
+        pricingModel: @pricingModel
+      }
+      return @client.post(
+        "#{Entrypoint}servers/#{serverID}/actions/reserve",
+        headers: {'Content-Type': 'application/json'},
+        body: requestBody)
+      )
+    end
+  end
+
+  ##
   # Reset command will reset the configuration for a specific server.
   #
   # @see https://developers.phoenixnap.com/docs/bmc/1/routes/servers/%7Bserver_id%7D/actions/reset/post
